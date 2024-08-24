@@ -1,0 +1,29 @@
+{
+"type": "FeatureCollection",
+"name": "Walmarts",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "Wal-Mart India Private Limited" }, "geometry": { "type": "Point", "coordinates": [ 78.768902512987594, 27.025740129659098 ] } },
+{ "type": "Feature", "properties": { "Name": "Walmart INDIA Office Rgtd. E-20, 1st and 2nd Floor" }, "geometry": { "type": "Point", "coordinates": [ 77.2113991, 28.547714 ] } },
+{ "type": "Feature", "properties": { "Name": "WAL-MART INDIA PRIVATE LIMITE" }, "geometry": { "type": "Point", "coordinates": [ 77.4189199, 23.3039442 ] } },
+{ "type": "Feature", "properties": { "Name": "Walmart" }, "geometry": { "type": "Point", "coordinates": [ 75.2996573, 19.8499833 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 78.4269262, 17.3355243 ] } },
+{ "type": "Feature", "properties": { "Name": "Walmart" }, "geometry": { "type": "Point", "coordinates": [ 78.0394397, 15.8078307 ] } },
+{ "type": "Feature", "properties": { "Name": "Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 79.4899165, 13.6332684 ] } },
+{ "type": "Feature", "properties": { "Name": "Wal-Mart India Private Limited" }, "geometry": { "type": "Point", "coordinates": [ 77.9270419, 27.2198786 ] } },
+{ "type": "Feature", "properties": { "Name": "WAL-MART INDIA PRIVATE LIMITED" }, "geometry": { "type": "Point", "coordinates": [ 75.9419641, 30.8881387 ] } },
+{ "type": "Feature", "properties": { "Name": "WAL-MART INDIA PRIVATE LIMITED" }, "geometry": { "type": "Point", "coordinates": [ 74.687324939472305, 31.4912487530659 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 76.8235043, 30.6375368 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 75.6573282, 31.2920922 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 74.9619796, 31.5901782 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 75.8243597, 30.9507084 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 75.9390775, 30.8853824 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 77.6738606, 29.0369665 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 75.8553842, 25.1347848 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price" }, "geometry": { "type": "Point", "coordinates": [ 78.0922942, 27.2171019 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 77.4774699, 23.1538093 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 75.9335085, 22.7503353 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 81.0040274, 26.7992258 ] } },
+{ "type": "Feature", "properties": { "Name": "Best Price Flipkart Wholesale" }, "geometry": { "type": "Point", "coordinates": [ 83.1879391, 17.6852547 ] } }
+]
+}

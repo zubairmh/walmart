@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import Map, { Source, Layer, Marker, Popup } from "react-map-gl/maplibre";
+import { PiPlantBold, PiCowDuotone } from "react-icons/pi";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -11,7 +13,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar } from "@/components/ui/avatar";
-
+import { Button } from "@/components/ui/button";
+import Pin from "@/components/pin";
+import { useRouter } from "next/navigation";
 const states = {
   "Andaman And Nicobar": [11.66702557, 92.73598262],
   "Andhra Pradesh": [14.7504291, 78.57002559],
@@ -63,46 +67,32 @@ const cases = [
   { decease: "Healthy cotton", state: "Punjab", cases: 1 },
   { decease: "Leaf Curl", state: "Punjab", cases: 1 },
   { decease: "Leaf smut", state: "Punjab", cases: 1 },
-  { decease: "Mosaic sugarcane", state: "Punjab", cases: 1 },
-  { decease: "RedRot sugarcane", state: "Punjab", cases: 1 },
-  { decease: "RedRust sugarcane", state: "Punjab", cases: 1 },
-  { decease: "Rice Blast", state: "Punjab", cases: 1 },
-  { decease: "Sugarcane Healthy", state: "Punjab", cases: 1 },
-  { decease: "Tungro", state: "Punjab", cases: 1 },
-  { decease: "Wheat Brown leaf Rust", state: "Punjab", cases: 1 },
-  { decease: "Wheat Stem fly", state: "Punjab", cases: 1 },
-  { decease: "Wheat aphid", state: "Punjab", cases: 1 },
-  { decease: "Wheat black rust", state: "Punjab", cases: 1 },
-  { decease: "Wheat leaf blight", state: "Punjab", cases: 1 },
-  { decease: "Wheat mite", state: "Punjab", cases: 1 },
-  { decease: "Wheat powdery mildew", state: "Punjab", cases: 1 },
-  { decease: "Wheat scab", state: "Punjab", cases: 1 },
-  { decease: "Wheat___Yellow_Rust", state: "Punjab", cases: 1 },
-  { decease: "Wilt", state: "Punjab", cases: 1 },
-  { decease: "Yellow Rust Sugarcane", state: "Punjab", cases: 1 },
-  { decease: "bacterial_blight in Cotton", state: "Punjab", cases: 1 },
-  { decease: "bollrot on Cotton", state: "Punjab", cases: 1 },
-  { decease: "bollworm on Cotton", state: "Punjab", cases: 1 },
-  { decease: "cotton mealy bug", state: "Punjab", cases: 1 },
-  { decease: "cotton whitefly", state: "Punjab", cases: 1 },
-  { decease: "maize ear rot", state: "Punjab", cases: 1 },
-  { decease: "maize fall armyworm", state: "Punjab", cases: 1 },
-  { decease: "maize stem borer", state: "Punjab", cases: 1 },
-  { decease: "pink bollworm in cotton", state: "Punjab", cases: 1 },
-  { decease: "red cotton bug", state: "Punjab", cases: 1 },
-  { decease: "thirps on cotton", state: "Punjab", cases: 1 },
 ];
 
 export default function Home() {
   const mapRef = useRef(null);
+  const router = useRouter();
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+  const [isChecked, setIsChecked] = useState(false);
   const [vs, setVS] = useState({
     longitude: 80.44905262502743,
     latitude: 22.61372936166029,
     zoom: 4,
   });
   const [data, setAllData] = useState({});
+  const [reports, setReports] = useState([]);
   const [hoverInfo, setHoverInfo] = useState(null);
+  const [isAnimal, setIsAnimal] = useState(false);
+  const [latestReports, setLatestReports] = useState({
+    latest_reports: [],
+    disease_counts: {},
+  });
 
+  const handleToggle = () => {
+    setIsAnimal(!isAnimal);
+  };
   useEffect(() => {
     fetch("/Walmarts.geojson")
       .then((resp) => resp.json())
@@ -110,50 +100,84 @@ export default function Home() {
       .catch((err) => console.error("Could not load data", err));
   }, []);
 
+  useEffect(() => {
+    axios.get("http://172.16.164.211:8000/all_reports").then((res) => {
+      setReports(res.data.all_reports);
+      console.log("reports", res.data.all_reports);
+    });
+  }, []);
+
   const onMove = useCallback(({ viewState }) => {
     setVS(viewState);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      axios
+        .get("http://172.16.164.211:8000/latest_reports")
+        .then((res) => {
+          setLatestReports(res.data);
+        })
+        .catch((err) => {
+          console.error("Could not fetch latest reports", err);
+        });
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
       {/* Navbar */}
-      <nav className="bg-blue-500 text-white p-4 flex justify-between">
-        <div className="container mx-auto">
-          <h1 className="text-xl font-bold">Disease Cases Dashboard</h1>
-        </div>
-        <div className="flex items-center">
-          <span className="mr-2">Hi admin</span>
-          <Avatar
-            className="w-8 h-8"
-            src="https://shadcn.dev/avatar.png" // Replace with your avatar URL
-            alt="Admin Avatar"
+      <nav className="bg-white text-black flex justify-between items-center border-b-2 relative">
+        <div className="flex items-center space-x-4">
+          <img
+            src="./main1.png"
+            className="h-[161px]"
+            alt="Department of Animal Husbandry and Dairying Logo"
           />
+          <div className="text-3xl font-semibold">
+            <p>KRISHI MITRA</p>
+          </div>
+        </div>
+
+        <img src="./main2.png" className="h-[161px]" alt="Logo 1" />
+
+        <div className="absolute bottom-0 right-0 flex space-x-2 text-xl p-2">
+          <div className=" flex items-center justify-center">
+            <Button onClick={() => router.push("/")}>Home</Button>
+          </div>
+          <div className=" flex items-center justify-center">
+            <Button onClick={() => router.push("/Analytics")}>Analytics</Button>
+          </div>
+          <div className="flex items-center justify-center">
+            <Button onClick={() => router.push("/Alerts")}>Alerts</Button>
+          </div>
         </div>
       </nav>
-
-      <div className="flex flex-row items-start justify-center p-8">
-        <div className="flex flex-col w-1/3 max-h-96 overflow-y-auto bg-gray-100 p-4 rounded-lg">
+      <div className="flex flex-row items-start justify-center p-8 border-solid">
+        <div className="flex flex-col w-1/3 max-h-96  p-4 rounded-lg scroll-smooth border-solid">
           <div>
             <Table>
-              <TableCaption>Cases by State</TableCaption>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Decease</TableHead>
+                  <TableHead>Disease</TableHead>
                   <TableHead>State</TableHead>
                   <TableHead>Cases</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cases.map((caseData, index) => (
+                {latestReports.latest_reports.map((report, index) => (
                   <TableRow
                     style={{ cursor: "pointer" }}
                     key={index}
                     onClick={() => {
-                      if (caseData.state in states) {
+                      if (report.state in states) {
                         mapRef.current?.flyTo({
                           center: [
-                            states[caseData.state][1],
-                            states[caseData.state][0],
+                            states[report.state][1],
+                            states[report.state][0],
                           ],
                           zoom: 7,
                           duration: 2000,
@@ -161,9 +185,11 @@ export default function Home() {
                       }
                     }}
                   >
-                    <TableCell>{caseData.decease}</TableCell>
-                    <TableCell>{caseData.state}</TableCell>
-                    <TableCell>{caseData.cases}</TableCell>
+                    <TableCell>{report.disease}</TableCell>
+                    <TableCell>{report.state}</TableCell>
+                    <TableCell>
+                      {latestReports.disease_counts[report.disease]}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -171,6 +197,32 @@ export default function Home() {
           </div>
         </div>
 
+        <label className="flex cursor-pointer select-none items-center mb-4">
+          <div className="relative">
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+              className="sr-only"
+            />
+            <div
+              className={`block h-8 w-14 rounded-full ${
+                isChecked ? "bg-red-500" : " bg-green-500"
+              }`}
+            ></div>
+            <div
+              className={`dot absolute top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition-transform ${
+                isChecked ? "translate-x-6" : ""
+              }`}
+            >
+              {isChecked ? (
+                <PiCowDuotone className="text-red-500" />
+              ) : (
+                <PiPlantBold className="text-green-500" />
+              )}
+            </div>
+          </div>
+        </label>
         <div className="w-2/3 ml-8 relative">
           <Map
             initialViewState={vs}
@@ -179,7 +231,39 @@ export default function Home() {
             style={{ width: "100%", height: "600px", borderRadius: "10px" }}
             mapStyle="https://api.maptiler.com/maps/topo-v2/style.json?key=OoO6K7R9CqFeyNgfk5Dk"
           >
-            <Source id="walmarts" type="geojson" data={data}>
+            {reports.map((report, index) => {
+              if (isChecked) {
+                if (report.type !== "livestock") {
+                  return null;
+                }
+              } else {
+                if (report.type !== "plant") {
+                  return null;
+                }
+              }
+              return (
+                <Marker
+                  key={`marker-${index}`}
+                  longitude={report.long}
+                  latitude={report.lat}
+                  anchor="bottom"
+                  onClick={(e) => {
+                    // If we let the click event propagates to the map, it will immediately close the popup
+                    // with `closeOnClick: true`
+                    e.originalEvent.stopPropagation();
+                  }}
+                >
+                  <Pin
+                    pinStyle={{
+                      cursor: "pointer",
+                      fill: isChecked ? "#d00" : "#0a0",
+                      stroke: "none",
+                    }}
+                  />
+                </Marker>
+              );
+            })}
+            {/* <Source id="walmarts" type="geojson" data={data}>
               <Layer
                 id="walmart-layer"
                 source="walmarts"
@@ -190,7 +274,7 @@ export default function Home() {
                   "icon-anchor": "bottom",
                 }}
               />
-            </Source>
+            </Source> */}
           </Map>
         </div>
       </div>
